@@ -22,7 +22,7 @@ set(BOOST_MIN_VERSION 1.78)
 ### Make the executable #######################################################
 set(SOURCES
     main.cpp
-    log.hpp
     log.cpp
+    lexical_analyzer.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
