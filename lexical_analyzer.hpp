@@ -5,7 +5,9 @@
 class LexicalAnalyzer{
 public:
     std::list<Token> tokens;
-    std::fstream fin;
+    std::ifstream fin;
 
-    LexicalAnalyzer(std::string input_file);
+    LexicalAnalyzer();
+
+    void parse(std::string input_file);
 };
