@@ -8,16 +8,13 @@ public:
     Value(TOKENS type, std::string x){
         switch (type){
             case TOKENS::CT_INT:
-                //int_ = stoi(x);
-                int_ = 1;
+                int_ = stoi(x);
                 break;
             case TOKENS::CT_REAL:
-                //float_ = stof(x);
-                float_ = 2.0;
+                float_ = stof(x);
                 break;
             case TOKENS::CT_CHAR:
-                //char_ = x.c_str()[0];
-                char_ = 'a';
+                char_ = x.c_str()[0];
                 break;
             case TOKENS::CT_STRING:
                 string_ = x;
@@ -26,6 +23,7 @@ public:
                 string_ = x;
                 break;
         }
+        string_ = x;
     };
     Value(){}
 
