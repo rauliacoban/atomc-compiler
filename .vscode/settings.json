@@ -57,6 +57,7 @@
         "typeinfo": "cpp",
         "semaphore": "cpp",
         "optional": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "variant": "cpp"
     }
 }
