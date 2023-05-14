@@ -25,7 +25,7 @@ bool isKeyword(std::string std){
 
 void LexicalAnalyzer::parse(std::string input_file)
 {
-    tokens.resize(1);
+    tokens.resize(0);
     fin = std::ifstream(input_file);
     if(!fin){
         LOGLINE("ERROR COULD NOT OPEN FILE " << input_file)
