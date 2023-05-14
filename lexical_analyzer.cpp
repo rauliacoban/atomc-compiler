@@ -25,6 +25,7 @@ bool isKeyword(std::string std){
 
 void LexicalAnalyzer::parse(std::string input_file)
 {
+    tokens.resize(1);
     fin = std::ifstream(input_file);
     if(!fin){
         LOGLINE("ERROR COULD NOT OPEN FILE " << input_file)
@@ -39,6 +40,9 @@ void LexicalAnalyzer::parse(std::string input_file)
     while(!fin.eof()){
         if(get_new)
             fin.get(c);
+
+        //LOGLINE(iter << " " << state << " " << c << " " << data)
+
         switch (state){
             case 0:
                 data = "";
@@ -96,51 +100,51 @@ void LexicalAnalyzer::parse(std::string input_file)
                 }
                 else if(c == '+'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::ADD);
+                    tokens.emplace_back(TOKENS::ADD, "+");
                 }
                 else if(c == '-'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::SUB);
+                    tokens.emplace_back(TOKENS::SUB, "-");
                 }
                 else if(c == '*'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::MUL);
+                    tokens.emplace_back(TOKENS::MUL, "*");
                 }
                 else if(c == '.'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::DOT);
+                    tokens.emplace_back(TOKENS::DOT, ".");
                 }
                 else if(c == ','){
                     state = 0;
-                    tokens.emplace_back(TOKENS::COMMA);
+                    tokens.emplace_back(TOKENS::COMMA, ",");
                 }
                 else if(c == ';'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::SEMICOLON);
+                    tokens.emplace_back(TOKENS::SEMICOLON, ";");
                 }
                 else if(c == '('){
                     state = 0;
-                    tokens.emplace_back(TOKENS::SEMICOLON);
+                    tokens.emplace_back(TOKENS::LPAR, "(");
                 }
                 else if(c == ')'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::SEMICOLON);
+                    tokens.emplace_back(TOKENS::RPAR, ")");
                 }
                 else if(c == '['){
                     state = 0;
-                    tokens.emplace_back(TOKENS::SEMICOLON);
+                    tokens.emplace_back(TOKENS::LBRACKET, "[");
                 }
                 else if(c == ']'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::SEMICOLON);
+                    tokens.emplace_back(TOKENS::RBRACKET, "]");
                 }
                 else if(c == '{'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::SEMICOLON);
+                    tokens.emplace_back(TOKENS::LACC, "{");
                 }
                 else if(c == '}'){
                     state = 0;
-                    tokens.emplace_back(TOKENS::SEMICOLON);
+                    tokens.emplace_back(TOKENS::RACC, "}");
                 }
                 else{
                     logIllegalInput(iter, c);
@@ -283,7 +287,7 @@ void LexicalAnalyzer::parse(std::string input_file)
                 else{
                     state = 0;
                     get_new = false;
-                    tokens.emplace_back(TOKENS::CT_REAL);
+                    tokens.emplace_back(TOKENS::CT_REAL, data);
                 }
                 break;
             case 20:
@@ -351,7 +355,7 @@ void LexicalAnalyzer::parse(std::string input_file)
                 if(c == '&'){
                     state = 0;
                     get_new = true;
-                    tokens.emplace_back(TOKENS::AND);
+                    tokens.emplace_back(TOKENS::AND, "&&");
                 }
                 else{
                     logIllegalInput(iter, c);
@@ -361,7 +365,7 @@ void LexicalAnalyzer::parse(std::string input_file)
                 if(c == '|'){
                     state = 0;
                     get_new = true;
-                    tokens.emplace_back(TOKENS::OR);
+                    tokens.emplace_back(TOKENS::OR, "||");
                 }
                 else{
                     logIllegalInput(iter, c);
@@ -371,48 +375,48 @@ void LexicalAnalyzer::parse(std::string input_file)
                 if(c == '='){
                     state = 0;
                     get_new = true;
-                    tokens.emplace_back(TOKENS::EQUAL);
+                    tokens.emplace_back(TOKENS::EQUAL, "==");
                 }
                 else{
                     state = 0;
                     get_new = false;
-                    tokens.emplace_back(TOKENS::ASSIGN);
+                    tokens.emplace_back(TOKENS::ASSIGN, "=");
                 }
                 break;
             case 37:
                 if(c == '='){
                     state = 0;
                     get_new = true;
-                    tokens.emplace_back(TOKENS::NOTEQ);
+                    tokens.emplace_back(TOKENS::NOTEQ, "!=");
                 }
                 else{
                     state = 0;
                     get_new = false;
-                    tokens.emplace_back(TOKENS::NOT);
+                    tokens.emplace_back(TOKENS::NOT, "!");
                 }
                 break;
             case 40:
                 if(c == '='){
                     state = 0;
                     get_new = true;
-                    tokens.emplace_back(TOKENS::LESSEQ);
+                    tokens.emplace_back(TOKENS::LESSEQ, "<=");
                 }
                 else{
                     state = 0;
                     get_new = false;
-                    tokens.emplace_back(TOKENS::LESS);
+                    tokens.emplace_back(TOKENS::LESS, "<");
                 }
                 break;
             case 43:
                 if(c == '='){
                     state = 0;
                     get_new = true;
-                    tokens.emplace_back(TOKENS::GREATER_EQ);
+                    tokens.emplace_back(TOKENS::GREATER_EQ, ">=");
                 }
                 else{
                     state = 0;
                     get_new = false;
-                    tokens.emplace_back(TOKENS::GREATER);
+                    tokens.emplace_back(TOKENS::GREATER, ">");
                 }
                 break;
             case 52:
@@ -429,7 +433,7 @@ void LexicalAnalyzer::parse(std::string input_file)
                 else{
                     get_new = false;
                     state = 0;
-                    tokens.emplace_back(TOKENS::DIV);
+                    tokens.emplace_back(TOKENS::DIV, "/");
                 }
                 break;
             case 53:

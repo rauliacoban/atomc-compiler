@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "log.hpp"
 #include "lexical_analyzer.hpp"
 #include <list>
@@ -27,10 +28,26 @@ int main(){
         "./tests/9.c"
     };
 
-    for(size_t i = 0; i < test_files.size(); i ++)
+    std::vector<std::string> output_files = {
+        "./result/0.txt",
+        "./result/1.txt",
+        "./result/2.txt",
+        "./result/3.txt",
+        "./result/4.txt",
+        "./result/5.txt",
+        "./result/6.txt",
+        "./result/7.txt",
+        "./result/8.txt",
+        "./result/9.txt"
+    };
+
+    for(size_t i = 0; i < test_files.size(); i ++){
+        //LOGLINE("   --- " << i << " ---")
         analyzer.parse(test_files[i]);
 
-    //for(int i = 0; i < analyzer.tokens.size(); i++){
-        
-    //}
+        std::ofstream out(output_files[i]);
+        for(size_t k = 0; k < analyzer.tokens.size(); k++)
+            out << analyzer.tokens[k].value.string_ << "\n";
+        out.close();
+    }
 }

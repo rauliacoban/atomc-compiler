@@ -47,17 +47,17 @@ public:
     };
     Token(TOKENS type):
         type{type},
-        value{0}{
+        value{"NOVALUE"}{
     };
     Token():
         type{TOKENS::NONETYPE},
-        value{0}{
+        value{"NOVALUE"}{
     }
 
     Token(const Token &token):
         type{token.type}{
             switch (type)
-            {
+            {/*
             case TOKENS::CT_INT:
                 value.int_ = token.value.int_;
                 break;
@@ -69,9 +69,9 @@ public:
                 break;
             case TOKENS::CT_STRING:
                 value.string_ = token.value.string_;
-                break;
+                break;*/
             default:
-                value.int_ = token.value.int_;
+                value.string_ = token.value.string_;
                 break;
             }
     };
