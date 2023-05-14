@@ -11,9 +11,6 @@
 int main(){
     LOGLINE("merrydo")
 
-    std::list<Token> tokens;
-    tokens.emplace_back(TOKENS::INT);
-
     //LOGLINE(tokens.front().value.int_)
 
     LexicalAnalyzer analyzer;
@@ -32,4 +29,8 @@ int main(){
 
     for(size_t i = 0; i < test_files.size(); i ++)
         analyzer.parse(test_files[i]);
+
+    //for(int i = 0; i < analyzer.tokens.size(); i++){
+        
+    //}
 }

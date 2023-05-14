@@ -42,5 +42,7 @@ enum class TOKENS{
     SPACE = 48,
     LINECOMMENT = 49,
     COMMENT = 50,
-    ID = 51
+    ID = 51,
+    END = 60,
+    NONETYPE = 70
 };

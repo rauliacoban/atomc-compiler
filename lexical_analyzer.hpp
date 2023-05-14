@@ -1,10 +1,11 @@
 #pragma once
 #include "token.hpp"
+#include <vector>
 #include <list>
 
 class LexicalAnalyzer{
 public:
-    std::list<Token> tokens;
+    std::vector<Token> tokens;
     std::ifstream fin;
 
     LexicalAnalyzer();
