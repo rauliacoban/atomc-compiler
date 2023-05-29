@@ -58,6 +58,9 @@
         "semaphore": "cpp",
         "optional": "cpp",
         "deque": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "condition_variable": "cpp",
+        "fstream": "cpp",
+        "numbers": "cpp"
     }
 }

@@ -24,5 +24,6 @@ set(SOURCES
     main.cpp
     log.cpp
     lexical_analyzer.cpp
+    syntactic_analyzer.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})

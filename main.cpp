@@ -2,6 +2,7 @@
 #include <fstream>
 #include "log.hpp"
 #include "lexical_analyzer.hpp"
+#include "syntactic_analyzer.hpp"
 #include <list>
 #include <vector>
 
@@ -14,7 +15,7 @@ int main(){
 
     //LOGLINE(tokens.front().value.int_)
 
-    LexicalAnalyzer analyzer;
+    LexicalAnalyzer lexical;
     std::vector<std::string> test_files = {
         "./tests/0.c",
         "./tests/1.c",
@@ -43,13 +44,13 @@ int main(){
 
     for(size_t i = 0; i < test_files.size(); i ++){
         //LOGLINE("   --- " << i << " ---")
-        analyzer.parse(test_files[i]);
+        lexical.parse(test_files[i]);
 
         std::ofstream out(output_files[i]);
-        for(size_t k = 0; k < analyzer.tokens.size(); k++)
-            out << (int)analyzer.tokens[k].type << " " << analyzer.tokens[k].as_string << "\n";
+        for(size_t k = 0; k < lexical.tokens.size(); k++)
+            out << (int)lexical.tokens[k].type << " " << lexical.tokens[k].as_string << "\n";
         out.close();
 
-        
+        SyntacticAnalyzer syntactic(lexical.tokens);
     }
 }
