@@ -47,7 +47,9 @@ int main(){
 
         std::ofstream out(output_files[i]);
         for(size_t k = 0; k < analyzer.tokens.size(); k++)
-            out << analyzer.tokens[k].as_string << "\n";
+            out << (int)analyzer.tokens[k].type << " " << analyzer.tokens[k].as_string << "\n";
         out.close();
+
+        
     }
 }

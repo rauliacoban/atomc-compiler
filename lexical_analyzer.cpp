@@ -478,5 +478,7 @@ void LexicalAnalyzer::parse(std::string input_file)
         iter++;
     }
 
+    tokens.emplace_back(TOKENS::END, "!!!-END-!!!");
+
     fin.close();
 }
