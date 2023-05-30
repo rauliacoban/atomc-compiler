@@ -19,10 +19,6 @@ void logIllegalInput(int iter, char c){
     exit(1);
 }
 
-bool isKeyword(std::string std){
-    return false;
-}
-
 void LexicalAnalyzer::parse(std::string input_file)
 {
     tokens.resize(0);
@@ -159,10 +155,28 @@ void LexicalAnalyzer::parse(std::string input_file)
                 else{
                     state = 0;
                     get_new = false;
-                    if(isKeyword(data)){
-                        //add keyword
-                    }
-                    tokens.emplace_back(TOKENS::ID, data);
+                    if(data == "int")
+                        tokens.emplace_back(TOKENS::INT, data);
+                    else if(data == "char")
+                        tokens.emplace_back(TOKENS::CHAR, data);
+                    else if(data == "double")
+                        tokens.emplace_back(TOKENS::DOUBLE, data);
+                    else if(data == "else")
+                        tokens.emplace_back(TOKENS::ELSE, data);
+                    else if(data == "for")
+                        tokens.emplace_back(TOKENS::FOR, data);
+                    else if(data == "if")
+                        tokens.emplace_back(TOKENS::IF, data);
+                    else if(data == "return")
+                        tokens.emplace_back(TOKENS::RETURN, data);
+                    else if(data == "struct")
+                        tokens.emplace_back(TOKENS::STRUCT, data);
+                    else if(data == "void")
+                        tokens.emplace_back(TOKENS::VOID, data);
+                    else if(data == "while")
+                        tokens.emplace_back(TOKENS::WHILE, data);
+                    else
+                        tokens.emplace_back(TOKENS::ID, data);
                 }
                 break;
             case 4:
