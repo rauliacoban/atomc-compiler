@@ -1,8 +1,7 @@
 #include "syntactic_analyzer.hpp"
 #include <string.h>
 
-SyntacticAnalyzer::SyntacticAnalyzer(std::vector<Token> &tokens):
-    tokens(tokens)
-{
-    
+void exitError(std::string msg){
+    LOGLINE(msg)
+    exit(1);
 }

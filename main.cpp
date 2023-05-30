@@ -52,5 +52,6 @@ int main(){
         out.close();
 
         SyntacticAnalyzer syntactic(lexical.tokens);
+        LOGLINE_CHANNEL(i, syntactic.unit());
     }
 }
