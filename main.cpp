@@ -52,6 +52,8 @@ int main(){
         out.close();
 
         SyntacticAnalyzer syntactic(lexical.tokens);
-        LOGLINE_CHANNEL(i, syntactic.unit());
+        bool success = syntactic.unit();
+        
+        LOGLINE_CHANNEL(i, success);
     }
 }

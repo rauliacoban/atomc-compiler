@@ -6,6 +6,7 @@
 void exitError(std::string msg);
 class SyntacticAnalyzer{
 public:
+    void exitError(std::string msg);
     std::vector<Token> &tokens;
     int index = 0;
     int consumed = -1;
@@ -30,13 +31,13 @@ public:
             else if(declVar()){}
             else break;
         }
-        LOGLINE("!!!" << index)
         if(!consume(TOKENS::END))
             exitError("[unit] missing END");
         return true;
     }
 
     bool declStruct(){
+        int fallback = index;
         if(consume(TOKENS::STRUCT)){
             if(consume(TOKENS::ID)){
                 if(consume(TOKENS::LACC)){
@@ -52,7 +53,10 @@ public:
                     }
                     else exitError("[declStruct] missing RACC");
                 }
-                else exitError("[declStruct] missing LACC");
+                else{
+                    index = fallback;
+                    return false;
+                };
             }
             else exitError("[declStruct] missing STRUCT");
         }
@@ -83,13 +87,13 @@ public:
     }
 
     bool typeBase(){
-
-        LOGLINE("\nhello! " << int(tokens[index].type) << "\n")
         if(consume(TOKENS::INT)){ return true;}
         else if(consume(TOKENS::DOUBLE)){ return true;}
         else if(consume(TOKENS::CHAR)){ return true;}
         else if(consume(TOKENS::STRUCT)){ 
-            if(consume(TOKENS::ID)){ return true;}
+            if(consume(TOKENS::ID)){ 
+                return true;
+            }
             else exitError("[typeBase] missing ID");   
         }
         return false;
@@ -115,6 +119,8 @@ public:
     }
 
     bool declFunc(){
+        int fallback = index;
+
         if(typeBase()){
             if(consume(TOKENS::MUL)){} 
         }
@@ -131,16 +137,19 @@ public:
                         }
                         else break;
                     }
-                    if(consume(TOKENS::RPAR)){
-                        if(stmCompound()){
-                            return true;
-                        }
-                        else exitError("[declFunc] missing stmCompound");
-                    }
-                    else exitError("[declFunc] missing RPAR");
                 }
+                if(consume(TOKENS::RPAR)){
+                    if(stmCompound()){
+                        return true;
+                    }
+                    else exitError("[declFunc] missing stmCompound");
+                }
+                else exitError("[declFunc] missing RPAR");
             }
-            else exitError("[declFunc] missing LPAR");
+            else{
+                index = fallback;
+                return false;
+            }
 
         }
         else exitError("[declFunc] missing ID");
@@ -174,7 +183,7 @@ public:
                         }
                         else exitError("[stm] missing stm");
                     }
-                    else exitError("[stm] missing RPAR");
+                    else exitError("[stm] missing RPAR1");
                 }
                 else exitError("[stm] missing expr");
             }
@@ -189,7 +198,7 @@ public:
                         }
                         else exitError("[stm] missing stm");
                     }
-                    else exitError("[stm] missing RPAR");
+                    else exitError("[stm] missing RPAR2");
                 }
                 else exitError("[stm] missing expr");
             }
@@ -208,11 +217,11 @@ public:
                             }
                             else exitError("[stm] missing stm");
                         }
-                        else exitError("[stm] missing RPAR");
+                        else exitError("[stm] missing RPAR3");
                     }
-                    else exitError("[stm] missing SEMICOLON");
+                    else exitError("[stm] missing SEMICOLON1");
                 }
-                else exitError("[stm] missing SEMICOLON");
+                else exitError("[stm] missing SEMICOLON2");
             }
             else exitError("[stm] missing LPAR");
         }
@@ -220,20 +229,20 @@ public:
             if(consume(TOKENS::SEMICOLON)){
                 return true;
             }
-            else exitError("[stm] missing SEMICOLON");
+            else exitError("[stm] missing SEMICOLON3");
         }
         else if(consume(TOKENS::RETURN)){
             if(expr()){}
             if(consume(TOKENS::SEMICOLON)){
                 return true;
             }
-            else exitError("[stm] missing SEMICOLON");
+            else exitError("[stm] missing SEMICOLON4");
         }
         else if(expr()){
                 if(consume(TOKENS::SEMICOLON)){
                     return true;
                 }
-                else exitError("[stm] missing SEMICOLON");
+                else exitError("[stm] missing SEMICOLON5");
         }
         else if(consume(TOKENS::SEMICOLON)){
             return true;
@@ -264,6 +273,8 @@ public:
     }
 
     bool exprAssign(){
+        int fallback = index;
+        bool go_back = false;
         if(exprUnary()){
             if(consume(TOKENS::ASSIGN)){
                 if(exprAssign()){
@@ -271,10 +282,18 @@ public:
                 }
                 else exitError("[exprAssign] missing exprAssign");
             }
-            else exitError("[exprAssign] missing ASSIGN");
+            else{
+                index = fallback;
+                go_back = true;
+            }
         }
         else if(exprOr()){
             return true;
+        }
+        if(go_back){
+            if(exprOr()){
+                return true;
+            }
         }
         return false;
     }
@@ -324,7 +343,7 @@ public:
     bool exprRel(){
         if(exprAdd()){
             while(true){
-                if(consume(TOKENS::LESS) or consume(TOKENS::LESS) or consume(TOKENS::GREATER) or consume(TOKENS::GREATER_EQ)){
+                if(consume(TOKENS::LESS) or consume(TOKENS::LESSEQ) or consume(TOKENS::GREATER) or consume(TOKENS::GREATER_EQ)){
                     if(exprAdd()){}
                     else exitError("[exprRel] missing exprAdd");
                 }
@@ -400,17 +419,13 @@ public:
             while(true){
                 if(consume(TOKENS::LBRACKET)){
                     if(expr()){
-                        if(consume(TOKENS::RBRACKET)){
-                            return true;
-                        }
+                        if(consume(TOKENS::RBRACKET)){}
                         else exitError("[exprPostfix] missing RBRACKET");
                     }
                     else exitError("[exprPostfix] missing expr");
                 }
                 else if(consume(TOKENS::DOT)){
-                    if(consume(TOKENS::ID)){
-                        return true;
-                    }
+                    if(consume(TOKENS::ID)){}
                     else exitError("[exprPostfix] missing ID");
                 }
                 else break;

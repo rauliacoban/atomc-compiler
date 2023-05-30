@@ -1,7 +1,8 @@
 #include "syntactic_analyzer.hpp"
 #include <string.h>
 
-void exitError(std::string msg){
+void SyntacticAnalyzer::exitError(std::string msg){
+    LOGLINE("Stopped at index " << index << " string: " << tokens[index].value.string_)
     LOGLINE(msg)
     exit(1);
 }
